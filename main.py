@@ -8,20 +8,41 @@ def reader(distanceMatrixFile):
 		 baseLine =["Fec.G3.D00.Bailey"]
 		 controlLine = ["Fec.G3.D14.Bailey","Fec.G3.D07.Bailey","Fec.G3.D28.Bailey"]
 		 index = [0]
-		 fm = list(dm[:,index])
+		 firstCol = dm[:,index]
+		 firstRow = dm[index,:]
+
 		 #print fm
-		 loc = np.nonzero(fm=='Fec.G3.D28.Bailey')
-		 print loc
-		 print "hi"
+		 fm  = np.array(['Dog','baseLine','controlLine','distance'])
+		 writer(fm)
+		 loc2 = np.nonzero(firstCol==baseLine)
+		 for control in controlLine:
+			loc1 = np.nonzero(firstRow==control)		 	
+			# print type(loc1)
+			# print loc1
+			#print "loc1"
+			##print loc1[0]
+			#print loc2
+			#print "   loc2"
+			#print loc2[1]
+			#print control
+			#print dm[loc2[0],loc1[1]]
+			test = dm[loc2[0],loc1[1]][0]
+			print "hi"
+			tt = np.array(['Bailey',baseLine[0],control,test],dtype=object)
+			writer(tt.transpose())
+			#fm = np.concatenate(fm,tt)
+			#print fm
+		 
 		 
 		# dm = dm[:,'Fec.G2.D42.Chase']
-		 writer(dm)
+		# print fm.transpose()
+		# writer(fm)
 
 def writer(output):
-	with open("output.txt","w") as outFile:
+	with open("output.txt","a") as outFile:
 		writer = csv.writer(outFile, delimiter=',')
-		for line in output:
-			writer.writerow(line)
+		#for line in output:
+		writer.writerow(output)
 
 
 if __name__ == "__main__":
