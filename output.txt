@@ -1,4 +1,0 @@
-Dog,baseLine,controlLine,distance
-Bailey,Fec.G3.D00.Bailey,Fec.G3.D14.Bailey,0.760463450277
-Bailey,Fec.G3.D00.Bailey,Fec.G3.D07.Bailey,0.745106802583
-Bailey,Fec.G3.D00.Bailey,Fec.G3.D28.Bailey,0.712427008305
