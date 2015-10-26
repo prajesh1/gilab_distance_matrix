@@ -14,34 +14,36 @@ def reader(distanceMatrixFile):
 		 	mappingFile = np.array(list(csv.reader(mappingFile, delimiter = '\t')))
 		 #print fm
 		 samples = mappingFile[:,6]
+		 
 		 mappingFirstCol = mappingFile[:0]
 		 #samples.remove("Dog")
 		 samples = np.unique(samples)
-		 #print samples
+		 print samples
 		 for sample in samples:
-						 fm  = sample
-						controlRow = np.nonzero(mappingFirstCol==) 
-						control = mappingFile[row,0]
-						baseLine = mappingFile[row,0]
-						 loc2 = np.nonzero(firstCol==baseLine)
-						 for control in controlLine:
-							loc1 = np.nonzero(firstRow==control)		 	
-							test = dm[loc2[0],loc1[1]][0]
-							fm.append(control)
-							print fm
-						 
-						 writer(fm) 
-						 fm  = ['Distance']
-						 for control in controlLine:
-							loc1 = np.nonzero(firstRow==control)		 	
-							test = dm[loc2[0],loc1[1]][0]
-							fm.append(test)
-							print fm
-						 
-						 writer(fm)
-						# dm = dm[:,'Fec.G2.D42.Chase']
-						# print fm.transpose()
-						# writer(fm)
+		 			if(sample !='Dog'):
+						#print sample
+						value = mappingFile[np.logical_or.reduce([mappingFile[:,6] == sample])]
+						days = value[:,5]
+		 				days = np.unique(days)
+						#print mappingFile
+						print "value"
+						#print value[0][0]
+						#print value[:,5]
+						loc= np.nonzero(value[:,5]=="0")
+						baseLine = value[loc[0]][0][0]
+						print "baseLine " +baseLine
+						for day in days:
+							if(day!= "0" and day!="Day"):
+								print "Day is "+day
+								#value = value[[value[:,5] == day]]
+
+								loc= np.nonzero(value[:,5]==day)
+								#print loc[0]
+								controlLine= value[loc[0]][0][0]
+								print "controlLine " + controlLine
+
+								
+							
 
 def writer(output):
 	with open("output4.txt","a") as outFile:
