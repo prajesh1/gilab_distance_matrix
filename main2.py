@@ -14,13 +14,21 @@ def reader(distanceMatrixFile):
 		 	mappingFile = np.array(list(csv.reader(mappingFile, delimiter = '\t')))
 		 #print fm
 		 samples = mappingFile[:,6]
+		 allDays = mappingFile[:,5]
+		 allDays = np.unique(allDays)
 		 
 		 mappingFirstCol = mappingFile[:0]
 		 #samples.remove("Dog")
 		 samples = np.unique(samples)
+		 printRow = ['Sample Name']
+		 for allDay in allDays:
+		 	if(allDay!="Day"):
+		 		printRow.append(allDay)
+		 writer(printRow)
 		 print samples
 		 for sample in samples:
 		 			if(sample !='Dog'):
+		 				
 						#print sample
 						value = mappingFile[np.logical_or.reduce([mappingFile[:,6] == sample])]
 						days = value[:,5]
@@ -31,25 +39,61 @@ def reader(distanceMatrixFile):
 						#print value[:,5]
 						loc= np.nonzero(value[:,5]=="0")
 						baseLine = value[loc[0]][0][0]
+						printRow = []
+						printRow.append(sample)
 						print "baseLine " +baseLine
-						for day in days:
-							if(day!= "0" and day!="Day"):
-								print "Day is "+day
+						
+						for allDay in allDays:
+		 					if(allDay!="Day"):
+			 					if(allDay in days):
+			 						loc= np.nonzero(value[:,5]==allDay)
+									#print loc[0]
+									controlLine= value[loc[0]][0][0]
+									print "controlLine " + controlLine
+									#distance = []
+			 						#distance = obtainDistance(baseLine,controlLine)
+			 						#print "The vakl is "
+			 						#print distance
+			 						printRow.append(obtainDistance(baseLine,controlLine))
+			 					else:
+			 						printRow.append(" ")
+			 			writer(printRow)
+
+						#for day in days:
+						#	if(day!= "0" and day!="Day"):
+							#	print "Day is "+day
 								#value = value[[value[:,5] == day]]
 
-								loc= np.nonzero(value[:,5]==day)
+							#	loc= np.nonzero(value[:,5]==day)
 								#print loc[0]
-								controlLine= value[loc[0]][0][0]
-								print "controlLine " + controlLine
+							#	controlLine= value[loc[0]][0][0]
+								#print "controlLine " + controlLine
+
+							#	obtainDistance(baseLine,controlLine)
 
 								
 							
 
 def writer(output):
 	with open("output4.txt","a") as outFile:
-		writer = csv.writer(outFile, delimiter=',')
+		writer = csv.writer(outFile, delimiter='\t')
 		#for line in output:
 		writer.writerow(output)
+
+def obtainDistance(baseLine,controlLine):
+	with open("unweighted_unifrac_dm.txt", "r") as dm:
+		 dm = np.array(list(csv.reader(dm, delimiter = '\t')))
+
+		 index = [0]
+		 firstCol = dm[:,index]
+		 firstRow = dm[index,:]
+
+		 loc2 = np.nonzero(firstCol==baseLine)
+		 loc1 = np.nonzero(firstRow==controlLine)
+		 
+		 test = dm[loc2[0],loc1[1]][0]
+		 print "Distance is "+test
+		 return test
 
 
 if __name__ == "__main__":
